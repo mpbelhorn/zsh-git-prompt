@@ -6,7 +6,7 @@ from subprocess import Popen, PIPE
 import sys
 
 # change those symbols to whatever you prefer
-symbols = {'ahead of': '↑', 'behind': '↓', 'prehash':':'}
+symbols = {'ahead of': '^', 'behind': 'v', 'prehash':':'}
 
 def git(args):
     return [byte_array.decode('utf-8') for byte_array in Popen(
@@ -36,9 +36,9 @@ nb_untracked = len(git(
 untracked = str(nb_untracked)
 
 if not nb_changed and not nb_staged and not nb_U and not nb_untracked:
-    clean = '1'
+    clean = u'1'
 else:
-    clean = '0'
+    clean = u'0'
 
 remote = ''
 if not branch: # not on any branch
