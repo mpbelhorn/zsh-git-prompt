@@ -47,38 +47,38 @@ if not branch: # not on any branch
 else:
     remote_name = git(
             ['config',
-             'branch.{}.remote'.format(branch)
+             'branch.{0}.remote'.format(branch)
             ])[0].strip()
     if remote_name:
         merge_name = git(
                 ['config',
-                 'branch.{}.merge'.format(branch)
+                 'branch.{0}.merge'.format(branch)
                 ])[0].strip()
         if remote_name == '.': # local
             remote_ref = merge_name
         else:
-            remote_ref = 'refs/remotes/{}/{}'.format(
+            remote_ref = 'refs/remotes/{0}/{1}'.format(
                     remote_name, merge_name[11:])
         revgit = Popen(
                 ['git',
                  'rev-list',
                  '--left-right',
-                 '{}...HEAD'.format(remote_ref)
+                 '{0}...HEAD'.format(remote_ref)
                 ], stdout=PIPE)
         revlist = revgit.communicate()[0].decode('utf-8')
         if revgit.poll(): # fallback to local
             revlist = git(
                     ['rev-list',
                      '--left-right',
-                     '{}...HEAD'.format(merge_name)
+                     '{0}...HEAD'.format(merge_name)
                     ])[0]
         behead = revlist.splitlines()
         ahead = len([x for x in behead if x[0]=='>'])
         behind = len(behead) - ahead
         if behind:
-            remote += '{}{}'.format(symbols['behind'], behind)
+            remote += '{0}{1}'.format(symbols['behind'], behind)
         if ahead:
-            remote += '{}{}'.format(symbols['ahead of'], ahead)
+            remote += '{0}{1}'.format(symbols['ahead of'], ahead)
 
 out = '\n'.join([
 	branch,
